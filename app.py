@@ -71,4 +71,4 @@ echo "streamlit" > requirements.txt
 echo "pandas" >> requirements.txt
 echo "scikit-learn" >> requirements.txt
 echo "matplotlib" >> requirements.txt
-!echo "seaborn" >> requirements.txt
+echo "seaborn" >> requirements.txt
