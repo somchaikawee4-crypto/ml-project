@@ -66,9 +66,3 @@ if st.button("ทำนายผล"):
     prediction = model.predict([[sepal_length, sepal_width, petal_length, petal_width]])
     species = iris.target_names[prediction[0]]
     st.subheader(f"🎉 ผลการทำนาย: ดอกไม้สายพันธุ์ **{species}**")
-
-echo "streamlit" > requirements.txt
-echo "pandas" >> requirements.txt
-echo "scikit-learn" >> requirements.txt
-echo "matplotlib" >> requirements.txt
-echo "seaborn" >> requirements.txt
