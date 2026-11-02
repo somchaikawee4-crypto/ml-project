@@ -7,8 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/17mSENWKAEPnklfDVXE5vozefhZXBwDGd
 """
 
-!pip install streamlit pandas scikit-learn matplotlib seaborn
-
 import streamlit as st
 import pandas as pd
 from sklearn.datasets import load_iris
