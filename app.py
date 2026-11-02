@@ -9,60 +9,118 @@ Original file is located at
 
 import streamlit as st
 import pandas as pd
+import numpy as np
 from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-# --- ส่วนที่ 1: ข้อมูลผู้พัฒนา ---
-st.title("ระบบทำนายผลด้วย Machine Learning")
-st.write("---")
-st.header("👤 ข้อมูลผู้พัฒนา")
+st.set_page_config(
+    page_title="Machine Learning Mini-Project",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-st.image("profile.JPG", caption="ผู้พัฒนาโครงการ", width=200)
-st.write("**รหัสดักศึกษา:** 664245049")
-st.write("**ชื่อ-นามสกุล:** ชื่อ นาย สุรสิทธิ์ ศรีสม")
-st.write("**หมู่เรียน:** เช่น 66/44")
-st.write("---")
+# ==========================================
+# แถบเมนูด้านข้าง (Sidebar) - ข้อมูลผู้พัฒนา
+# ==========================================
+with st.sidebar:
+    try:
+        st.image("profile.JPG", width=150, caption="ผู้พัฒนาโครงการ")
+    except:
+        st.write("🤖 โลโก้/รูปโปรไฟล์")
 
-# --- ส่วนที่ 2: โหลด Dataset และ Data Preprocessing ---
+    st.title("ข้อมูลผู้พัฒนาโครงการ")
+    st.markdown("---")
+    st.write("**รหัสนักศึกษา:** 664245049")
+    st.write("**ชื่อ-นามสกุล:** นาย สุสิทธิ์ ศรีสม")
+    st.write("**หมู่เรียน:** 66/44")
+    st.markdown("---")
+    st.info("💡 รายวิชา Machine Learning (7143505)")
+
+st.title("🌿 ระบบทำนายพันธุ์ดอกไม้ด้วย Machine Learning")
+st.write("ยินดีต้อนรับเข้าสู่เว็บไซต์แอปพลิเคชันสำหรับนำเสนอโครงการ Machine Learning Mini-Project ครับ")
+
+st.markdown("---")
+
+# หัวข้อที่ 1: การกำหนดปัญหาและ Dataset
 st.header("1. การกำหนดปัญหาและ Dataset")
-st.write("ใช้ชุดข้อมูล Iris Dataset เพื่อจำแนกชนิดของดอกไม้จากความกว้างและความยาวของกลีบดอกและกลีบเลี้ยง")
+st.write("โครงการนี้ใช้ชุดข้อมูล **Iris Dataset** ซึ่งเป็นชุดข้อมูลมาตรฐานสำหรับจำแนกชนิดของดอกไอริส โดยอาศัยความกว้างและความยาวของกลีบดอกและกลีบเลี้ยงเป็นปัจจัยในการพยากรณ์")
 
+# โหลดข้อมูล Iris
 iris = load_iris()
 df = pd.DataFrame(iris.data, columns=iris.feature_names)
 df['target'] = iris.target
 
-if st.checkbox("แสดงตัวอย่างข้อมูล Dataset (DataFrame)"):
-    st.write(df.head())
+if st.checkbox("📊 แสดงตัวอย่างข้อมูล Dataset (DataFrame)"):
+    st.dataframe(df.head(10))
 
-# --- ส่วนที่ 3: สร้างโมเดล ML (Random Forest) ---
-st.header("3. การสร้างโมเดล Machine Learning")
-st.write("ใช้อัลกอริทึม Random Forest Classifier ในการฝึกสอนโมเดล")
+st.markdown("---")
 
+# หัวข้อที่ 2: Data Preprocessing
+st.header("2. Data Preprocessing (การเตรียมข้อมูล)")
+st.write("ในขั้นตอนนี้ได้มีการตรวจสอบความถูกต้องของข้อมูล แบ่งสัดส่วนข้อมูลสำหรับฝึกสอน (Train) และทดสอบ (Test) เพื่อเตรียมป้อนเข้าสู่โมเดล Machine Learning อย่างเหมาะสม")
+st.code("""
+# ตัวอย่างโค้ดการแบ่งข้อมูล
 X = iris.data
 y = iris.target
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+""", language="python")
 
-model = RandomForestClassifier()
+st.markdown("---")
+
+# หัวข้อที่ 3: การสร้างโมเดล Machine Learning
+st.header("3. การสร้างโมเดล Machine Learning")
+st.write("เลือกใช้อัลกอริทึม **Random Forest Classifier** ซึ่งเป็นอัลกอริทึมที่มีประสิทธิภาพสูงในการจำแนกข้อมูลหลายคลาส (Multi-class Classification)")
+
+# ฝึกสอนโมเดลเบื้องหลัง
+X = iris.data
+y = iris.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = RandomForestClassifier(random_state=42)
 model.fit(X_train, y_train)
 
-# ทำนายผล
+# ทำนายและวัดผล
 y_pred = model.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
 
-st.success(f"เทรนโมเดลสำเร็จ! ความแม่นยำของโมเดล (Accuracy): {acc * 100:.2f}%")
+st.success(f"🎉 เทรนโมเดลสำเร็จ! ความแม่นยำของโมเดล (Accuracy): {acc * 100:.2f}%")
 
-# --- ส่วนที่ 4: ส่วนทดลองใช้งาน (Streamlit Application) ---
-st.header("5. Streamlit Application (ทดลองทำนาย)")
-st.write("ปรับค่าตัวแปรด้านล่างเพื่อทดสอบการทำนายของโมเดล:")
+st.markdown("---")
 
-sepal_length = st.slider("Sepal Length (ความยาวกลีบเลี้ยง)", 4.0, 8.0, 5.1)
-sepal_width = st.slider("Sepal Width (ความกว้างกลีบเลี้ยง)", 2.0, 4.5, 3.5)
-petal_length = st.slider("Petal Length (ความยาวกลีบดอก)", 1.0, 7.0, 1.4)
-petal_width = st.slider("Petal Width (ความกว้างกลีบดอก)", 0.1, 2.5, 0.2)
+# หัวข้อที่ 4: การประเมินและเปรียบเทียบโมเดล
+st.header("4. การประเมินและเปรียบเทียบโมเดล")
+st.write("จากการทดสอบโมเดล Random Forest Classifier บนชุดข้อมูลทดสอบ (Test Set) พบว่าให้ผลลัพธ์ความแม่นยำสูงมาก และสามารถนำไปประยุกต์ใช้งานจริงได้อย่างมีประสิทธิภาพ")
+st.metric(label="Model Accuracy Score", value=f"{acc * 100:.2f}%")
 
-if st.button("ทำนายผล"):
-    prediction = model.predict([[sepal_length, sepal_width, petal_length, petal_width]])
-    species = iris.target_names[prediction[0]]
-    st.subheader(f"🎉 ผลการทำนาย: ดอกไม้สายพันธุ์ **{species}**")
+st.markdown("---")
+
+# หัวข้อที่ 5: Streamlit Application (ทดลองทำนาย)
+st.header("5. Streamlit Application (ทดลองทำนายผล)")
+st.write("สามารถปรับค่าตัวแปรด้านล่างนี้เพื่อทดลองให้โมเดลทำนายสายพันธุ์ดอกไอริสได้ทันทีครับ:")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    sepal_length = st.slider("ความยาวกลีบเลี้ยง (sepal length in cm)", float(df.iloc[:,0].min()), float(df.iloc[:,0].max()), float(df.iloc[:,0].mean()))
+    sepal_width = st.slider("ความกว้างกลีบเลี้ยง (sepal width in cm)", float(df.iloc[:,1].min()), float(df.iloc[:,1].max()), float(df.iloc[:,1].mean()))
+
+with col2:
+    petal_length = st.slider("ความยาวกลีบดอก (petal length in cm)", float(df.iloc[:,2].min()), float(df.iloc[:,2].max()), float(df.iloc[:,2].mean()))
+    petal_width = st.slider("ความกว้างกลีบดอก (petal width in cm)", float(df.iloc[:,3].min()), float(df.iloc[:,3].max()), float(df.iloc[:,3].mean()))
+
+# ปุ่มทำนายผล
+if st.button("🔮 ทำนายผลสายพันธุ์ดอกไม้", type="primary"):
+    input_data = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
+    prediction = model.predict(input_data)
+    predicted_species = iris.target_names[prediction[0]]
+
+    st.balloons()
+    st.success(f"✨ ผลการทำนาย: ดอกไอริสสายพันธุ์ **{predicted_species.capitalize()}**")
+
+!echo "streamlit" > requirements.txt
+!echo "pandas" >> requirements.txt
+!echo "scikit-learn" >> requirements.txt
+!echo "matplotlib" >> requirements.txt
+!echo "seaborn" >> requirements.txt
