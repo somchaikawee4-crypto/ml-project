@@ -87,7 +87,10 @@ with st.sidebar:
 # 3. ส่วนเนื้อหาหลัก (Main Dashboard)
 # ==========================================
 st.title("⚡ MACHINE LEARNING PREDICTION ENGINE")
-st.write("ระบบประมวลผลและจำแนกข้อมูลอัตโนมัติด้วยอัลกอริทึม Machine Learning")
+st.write("> ระบบนี้ถูกพัฒนาขึ้นเพื่อจำแนกประเภทข้อมูลดอกไอริส (Iris Species Classification) 
+> โดยใช้กระบวนการเรียนรู้ของเครื่อง (Machine Learning) อัลกอริทึม Random Forest 
+> เพื่อให้ผู้ใช้งานสามารถทดลองปรับแต่งค่าตัวแปรและดูผลการทำนายได้แบบเรียลไทม์
+""")
 
 st.markdown("---")
 
