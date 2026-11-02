@@ -161,9 +161,3 @@ if st.button("🚀 EXECUTE PREDICTION"):
             <h1 style="color: #ffffff; font-size: 2.5rem; margin: 10px 0;">{predicted_species}</h1>
         </div>
     """, unsafe_allow_html=True)
-
-!echo "streamlit" > requirements.txt
-!echo "pandas" >> requirements.txt
-!echo "scikit-learn" >> requirements.txt
-!echo "matplotlib" >> requirements.txt
-!echo "seaborn" >> requirements.txt
