@@ -15,106 +15,155 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
+# ==========================================
+# 1. ตั้งค่าหน้าเว็บสไตล์ Dark Mode / Tech
+# ==========================================
 st.set_page_config(
-    page_title="Machine Learning Mini-Project",
-    page_icon="🤖",
+    page_title="AI CORE | ML ENGINE",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
+# แต่ง CSS เพิ่มความเท่ สไตล์ Dark / Cyber / Modern
+st.markdown("""
+    <style>
+    /* ปรับแต่งธีมรวม */
+    .stApp {
+        background-color: #0e1117;
+        color: #e0e0e0;
+    }
+    /* หัวข้อและตัวหนังสือเน้นสี */
+    h1, h2, h3 {
+        color: #00ffcc !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* ปรับแต่ง Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #161b22;
+        border-right: 1px solid #30363d;
+    }
+    /* ปรับแต่งปุ่มกด */
+    .stButton > button {
+        background: linear-gradient(45deg, #005c53, #00ffd5);
+        color: #040d1a;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 2rem;
+        transition: all 0.3s ease;
+    }
+    .stButton > button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 15px #00ffd5;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # ==========================================
-# แถบเมนูด้านข้าง (Sidebar) - ข้อมูลผู้พัฒนา
+# 2. แถบ Sidebar - ข้อมูลผู้พัฒนา (สไตล์ Profiler)
 # ==========================================
 with st.sidebar:
+    st.markdown("<h2 style='text-align: center; color: #00ffd5;'>⚡ DEVELOPER CORE</h2>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    # รูปโปรไฟล์
     try:
-        st.image("profile.JPG", width=150, caption="ผู้พัฒนาโครงการ")
+        st.image("profile.JPG", use_container_width=True)
     except:
-        st.write("🤖 โลโก้/รูปโปรไฟล์")
+        st.info("📷 PROFILE IMAGE")
 
-    st.title("ข้อมูลผู้พัฒนาโครงการ")
-    st.markdown("---")
-    st.write("**รหัสนักศึกษา:** 664245049")
-    st.write("**ชื่อ-นามสกุล:** นาย สุสิทธิ์ ศรีสม")
-    st.write("**หมู่เรียน:** 66/44")
-    st.markdown("---")
-    st.info("💡 รายวิชา Machine Learning (7143505)")
+    st.markdown("### 👤 User Information")
+    st.write("🆔 **STUDENT ID:** `664245049`")
+    st.write("👨‍💻 **NAME:** นาย สุสิทธิ์ ศรีสม")
+    st.write("🏫 **SECTION:** 66/44")
 
-st.title("🌿 ระบบทำนายพันธุ์ดอกไม้ด้วย Machine Learning")
-st.write("ยินดีต้อนรับเข้าสู่เว็บไซต์แอปพลิเคชันสำหรับนำเสนอโครงการ Machine Learning Mini-Project ครับ")
+    st.markdown("---")
+    st.markdown("### ⚙️ System Status")
+    st.success("🟢 ML Engine: Active")
+    st.caption("Course: Machine Learning (7143505)")
+
+# ==========================================
+# 3. ส่วนเนื้อหาหลัก (Main Dashboard)
+# ==========================================
+st.title("⚡ MACHINE LEARNING PREDICTION ENGINE")
+st.write("ระบบประมวลผลและจำแนกข้อมูลอัตโนมัติด้วยอัลกอริทึม Machine Learning")
 
 st.markdown("---")
 
-# หัวข้อที่ 1: การกำหนดปัญหาและ Dataset
+# --- หัวข้อที่ 1 ---
 st.header("1. การกำหนดปัญหาและ Dataset")
-st.write("โครงการนี้ใช้ชุดข้อมูล **Iris Dataset** ซึ่งเป็นชุดข้อมูลมาตรฐานสำหรับจำแนกชนิดของดอกไอริส โดยอาศัยความกว้างและความยาวของกลีบดอกและกลีบเลี้ยงเป็นปัจจัยในการพยากรณ์")
+st.write("วิเคราะห์และประมวลผลข้อมูล **Iris Dataset** สำหรับจำแนกประเภทด้วยปัจจัยขนาดโครงสร้าง 4 มิติ")
 
-# โหลดข้อมูล Iris
 iris = load_iris()
 df = pd.DataFrame(iris.data, columns=iris.feature_names)
 df['target'] = iris.target
 
-if st.checkbox("📊 แสดงตัวอย่างข้อมูล Dataset (DataFrame)"):
-    st.dataframe(df.head(10))
+with st.expander("🔍 คลิกเพื่อดูโครงสร้างข้อมูลมิติต่างๆ (Data Inspector)"):
+    st.dataframe(df.style.highlight_max(axis=0, color='#1f6f50'))
 
-st.markdown("---")
+# --- หัวข้อที่ 2 ---
+st.header("2. Data Preprocessing")
+st.write("การเตรียมข้อมูลและแบ่งสัดส่วนเพื่อฝึกสอนโมเดล (Train / Test Split)")
+col_a, col_b = st.columns(2)
+with col_a:
+    st.info("🔹 Training Set: 80%")
+with col_b:
+    st.info("🔹 Test Set: 20%")
 
-# หัวข้อที่ 2: Data Preprocessing
-st.header("2. Data Preprocessing (การเตรียมข้อมูล)")
-st.write("ในขั้นตอนนี้ได้มีการตรวจสอบความถูกต้องของข้อมูล แบ่งสัดส่วนข้อมูลสำหรับฝึกสอน (Train) และทดสอบ (Test) เพื่อเตรียมป้อนเข้าสู่โมเดล Machine Learning อย่างเหมาะสม")
-st.code("""
-# ตัวอย่างโค้ดการแบ่งข้อมูล
+# --- หัวข้อที่ 3 & 4 ---
+st.header("3. การสร้างโมเดล & 4. การประเมินผล")
+
+# เทรนโมเดล
 X = iris.data
 y = iris.target
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-""", language="python")
-
-st.markdown("---")
-
-# หัวข้อที่ 3: การสร้างโมเดล Machine Learning
-st.header("3. การสร้างโมเดล Machine Learning")
-st.write("เลือกใช้อัลกอริทึม **Random Forest Classifier** ซึ่งเป็นอัลกอริทึมที่มีประสิทธิภาพสูงในการจำแนกข้อมูลหลายคลาส (Multi-class Classification)")
-
-# ฝึกสอนโมเดลเบื้องหลัง
-X = iris.data
-y = iris.target
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-model = RandomForestClassifier(random_state=42)
+model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# ทำนายและวัดผล
 y_pred = model.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
 
-st.success(f"🎉 เทรนโมเดลสำเร็จ! ความแม่นยำของโมเดล (Accuracy): {acc * 100:.2f}%")
+# แสดงผลแบบ Dashboard Metric
+m1, m2, m3 = st.columns(3)
+m1.metric(label="ALGORITHM", value="Random Forest")
+m2.metric(label="MODEL ACCURACY", value=f"{acc * 100:.1f}%")
+m3.metric(label="STATUS", value="OPTIMAL", delta="High Precision")
 
 st.markdown("---")
 
-# หัวข้อที่ 4: การประเมินและเปรียบเทียบโมเดล
-st.header("4. การประเมินและเปรียบเทียบโมเดล")
-st.write("จากการทดสอบโมเดล Random Forest Classifier บนชุดข้อมูลทดสอบ (Test Set) พบว่าให้ผลลัพธ์ความแม่นยำสูงมาก และสามารถนำไปประยุกต์ใช้งานจริงได้อย่างมีประสิทธิภาพ")
-st.metric(label="Model Accuracy Score", value=f"{acc * 100:.2f}%")
-
-st.markdown("---")
-
-# หัวข้อที่ 5: Streamlit Application (ทดลองทำนาย)
-st.header("5. Streamlit Application (ทดลองทำนายผล)")
-st.write("สามารถปรับค่าตัวแปรด้านล่างนี้เพื่อทดลองให้โมเดลทำนายสายพันธุ์ดอกไอริสได้ทันทีครับ:")
+# --- หัวข้อที่ 5 ---
+st.header("5. Streamlit Application (Control Panel)")
+st.write("🎛️ **ปรับตั้งค่าพารามิเตอร์เพื่อทำการทดลองทำนายผล (Prediction Panel)**")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    sepal_length = st.slider("ความยาวกลีบเลี้ยง (sepal length in cm)", float(df.iloc[:,0].min()), float(df.iloc[:,0].max()), float(df.iloc[:,0].mean()))
-    sepal_width = st.slider("ความกว้างกลีบเลี้ยง (sepal width in cm)", float(df.iloc[:,1].min()), float(df.iloc[:,1].max()), float(df.iloc[:,1].mean()))
+    sepal_length = st.slider("Sepal Length (cm)", float(df.iloc[:,0].min()), float(df.iloc[:,0].max()), float(df.iloc[:,0].mean()))
+    sepal_width = st.slider("Sepal Width (cm)", float(df.iloc[:,1].min()), float(df.iloc[:,1].max()), float(df.iloc[:,1].mean()))
 
 with col2:
-    petal_length = st.slider("ความยาวกลีบดอก (petal length in cm)", float(df.iloc[:,2].min()), float(df.iloc[:,2].max()), float(df.iloc[:,2].mean()))
-    petal_width = st.slider("ความกว้างกลีบดอก (petal width in cm)", float(df.iloc[:,3].min()), float(df.iloc[:,3].max()), float(df.iloc[:,3].mean()))
+    petal_length = st.slider("Petal Length (cm)", float(df.iloc[:,2].min()), float(df.iloc[:,2].max()), float(df.iloc[:,2].mean()))
+    petal_width = st.slider("Petal Width (cm)", float(df.iloc[:,3].min()), float(df.iloc[:,3].max()), float(df.iloc[:,3].mean()))
 
-# ปุ่มทำนายผล
-if st.button("🔮 ทำนายผลสายพันธุ์ดอกไม้", type="primary"):
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ปุ่มทำนาย
+if st.button("🚀 EXECUTE PREDICTION"):
     input_data = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
     prediction = model.predict(input_data)
-    predicted_species = iris.target_names[prediction[0]]
+    predicted_species = iris.target_names[prediction[0]].upper()
 
     st.balloons()
-    st.success(f"✨ ผลการทำนาย: ดอกไอริสสายพันธุ์ **{predicted_species.capitalize()}**")
+    st.markdown(f"""
+        <div style="background-color: #161b22; border: 2px solid #00ffd5; border-radius: 10px; padding: 20px; text-align: center;">
+            <h3 style="color: #00ffd5; margin: 0;">TARGET CLASSIFICATION RESULT</h3>
+            <h1 style="color: #ffffff; font-size: 2.5rem; margin: 10px 0;">{predicted_species}</h1>
+        </div>
+    """, unsafe_allow_html=True)
+
+!echo "streamlit" > requirements.txt
+!echo "pandas" >> requirements.txt
+!echo "scikit-learn" >> requirements.txt
+!echo "matplotlib" >> requirements.txt
+!echo "seaborn" >> requirements.txt
