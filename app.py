@@ -118,9 +118,3 @@ if st.button("🔮 ทำนายผลสายพันธุ์ดอกไ�
 
     st.balloons()
     st.success(f"✨ ผลการทำนาย: ดอกไอริสสายพันธุ์ **{predicted_species.capitalize()}**")
-
-!echo "streamlit" > requirements.txt
-!echo "pandas" >> requirements.txt
-!echo "scikit-learn" >> requirements.txt
-!echo "matplotlib" >> requirements.txt
-!echo "seaborn" >> requirements.txt
