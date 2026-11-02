@@ -67,8 +67,8 @@ if st.button("ทำนายผล"):
     species = iris.target_names[prediction[0]]
     st.subheader(f"🎉 ผลการทำนาย: ดอกไม้สายพันธุ์ **{species}**")
 
-!echo "streamlit" > requirements.txt
-!echo "pandas" >> requirements.txt
-!echo "scikit-learn" >> requirements.txt
-!echo "matplotlib" >> requirements.txt
+echo "streamlit" > requirements.txt
+echo "pandas" >> requirements.txt
+echo "scikit-learn" >> requirements.txt
+echo "matplotlib" >> requirements.txt
 !echo "seaborn" >> requirements.txt
